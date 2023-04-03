@@ -10,7 +10,7 @@ const config = knexfile[environment];
 const db = knex(config);
 
 
-routePath.get('/', (req, res) => {
+routePath.get('/movies', (req, res) => {
     db
         .select('*')
         .from('movies')
@@ -19,7 +19,16 @@ routePath.get('/', (req, res) => {
         })
 })
 
-routePath.post('/', async (req, res) => {
+routePath.get('/users', (req, res) => {
+    db
+        .select('*')
+        .from('users')
+        .then(users => {
+            res.json(users)
+        })
+})
+
+routePath.post('/movies', async (req, res) => {
     let movie = req.body;
     await db
         .insert(movie)
@@ -35,7 +44,7 @@ routePath.post('/', async (req, res) => {
         );
 })
 
-routePath.delete('/', (req, res) => {
+routePath.delete('/movies', (req, res) => {
     db('movies')
         .where('title', req.body.title)
         .del()
